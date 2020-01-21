@@ -9,9 +9,9 @@ $fileGroupName = "CryptoBlockerGroup"
 $fileTemplateName = "CryptoBlockerTemplate"
 # set screening type to
 # Active screening: Do not allow users to save unathorized files
-$fileTemplateType = "Active"
+#$fileTemplateType = "Active"
 # Passive screening: Allow users to save unathorized files (use for monitoring)
-#$fileTemplateType = "Passiv"
+$fileTemplateType = "Passive"
 
 # Write the email options to the temporary file - comment out the entire block if no email notification should be set
 $EmailNotification = $env:TEMP + "\tmpEmail001.tmp"
@@ -20,9 +20,6 @@ $EmailNotification = $env:TEMP + "\tmpEmail001.tmp"
 ## en
 "Subject=Unauthorized file from the [Violated File Group] file group detected" >> $EmailNotification
 "Message=User [Source Io Owner] attempted to save [Source File Path] to [File Screen Path] on the [Server] server. This file is in the [Violated File Group] file group, which is not permitted on the server."  >> $EmailNotification
-## de
-#"Subject=Nicht autorisierte Datei erkannt, die mit Dateigruppe [Violated File Group] übereinstimmt" >> $EmailNotification
-#"Message=Das System hat erkannt, dass Benutzer [Source Io Owner] versucht hat, die Datei [Source File Path] unter [File Screen Path] auf Server [Server] zu speichern. Diese Datei weist Übereinstimmungen mit der Dateigruppe [Violated File Group] auf, die auf dem System nicht zulässig ist."  >> $EmailNotification
 
 # Write the event log options to the temporary file - comment out the entire block if no event notification should be set
 $EventNotification = $env:TEMP + "\tmpEvent001.tmp"
@@ -30,8 +27,6 @@ $EventNotification = $env:TEMP + "\tmpEvent001.tmp"
 "EventType=Warning" >> $EventNotification
 ## en
 "Message=User [Source Io Owner] attempted to save [Source File Path] to [File Screen Path] on the [Server] server. This file is in the [Violated File Group] file group, which is not permitted on the server." >> $EventNotification
-## de
-#"Message=Das System hat erkannt, dass Benutzer [Source Io Owner] versucht hat, die Datei [Source File Path] unter [File Screen Path] auf Server [Server] zu speichern. Diese Datei weist Übereinstimmungen mit der Dateigruppe [Violated File Group] auf, die auf dem System nicht zulässig ist." >> $EventNotification
 
 ################################ USER CONFIGURATION ################################
 
@@ -304,7 +299,7 @@ $drivesContainingShares | ForEach-Object {
     &filescrn.exe Screen Add "/Path:$_" "/SourceTemplate:$fileTemplateName"
 }
 
-# Add Folder Exceptions from ExcludeList.txt
+# Add Folder Exceptions from ExcludePaths.txt
 Write-Host "`n####"
 Write-Host "Processing ExcludeList.."
 ### move file from C:\Windows\System32 or whatever your relative path is to the directory of this script
